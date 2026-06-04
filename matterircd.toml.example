@@ -162,8 +162,8 @@ ShowContextMulti = false
 ShowMentions = false
 # Keep channel-wide @channel, @all and @here mentions as regular IRC PRIVMSGs instead of NOTICEs.
 #DisableHereAllNotices = true
-# Channel wide default mentions @channel, @all, and @here are shown as IRC NOTICEs.
-# This disables that making them appear as normal PRIVMSGs.
+# Legacy option: this also disables NOTICE behavior for @channel, @all, and @here.
+# Keep this for backward compatibility; use DisableHereAllNotices for new configs.
 #DisableDefaultMentions = true
 
 # Disable formatting / emphasis of text from Mattermost markdown to IRC (bold & italics)
