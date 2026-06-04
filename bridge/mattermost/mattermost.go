@@ -868,14 +868,13 @@ func (m *Mattermost) addParentMsg(parentID string, msg string, newLen int, uncou
 
 var validIRCNickRegExp = regexp.MustCompile("^[a-zA-Z0-9_]*$")
 var channelMentionNoticeRegExp = regexp.MustCompile(`@(channel|all|here)(\W|$)`)
-var hereAllMentionNoticeRegExp = regexp.MustCompile(`@(all|here)(\W|$)`)
 
 func (m *Mattermost) channelMessageType(message string) string {
 	if m.v.GetBool("mattermost.disabledefaultmentions") {
 		return ""
 	}
 
-	if m.v.GetBool("mattermost.disablehereallnotices") && hereAllMentionNoticeRegExp.MatchString(message) {
+	if m.v.GetBool("mattermost.disablehereallnotices") && channelMentionNoticeRegExp.MatchString(message) {
 		return ""
 	}
 

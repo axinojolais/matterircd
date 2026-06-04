@@ -20,7 +20,7 @@ func TestChannelMessageType(t *testing.T) {
 			want:    "notice",
 		},
 		{
-			name: "all and here can be regular messages",
+			name: "all can be regular messages",
 			settings: map[string]bool{
 				"mattermost.DisableHereAllNotices": true,
 			},
@@ -28,12 +28,20 @@ func TestChannelMessageType(t *testing.T) {
 			want:    "",
 		},
 		{
-			name: "channel mention stays notice with new option",
+			name: "here can be regular messages",
+			settings: map[string]bool{
+				"mattermost.DisableHereAllNotices": true,
+			},
+			message: "hello @here",
+			want:    "",
+		},
+		{
+			name: "channel can be regular messages with single option",
 			settings: map[string]bool{
 				"mattermost.DisableHereAllNotices": true,
 			},
 			message: "hello @channel",
-			want:    "notice",
+			want:    "",
 		},
 		{
 			name: "disable default mentions keeps legacy behavior",
