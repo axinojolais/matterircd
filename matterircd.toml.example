@@ -160,6 +160,9 @@ ShowContextMulti = false
 #This will show (mention yournick) after a message if it contains one of the words configured
 #in your mattermost "word that trigger mentions" notifications.
 ShowMentions = false
+# Keep channel-wide @all and @here mentions as regular IRC PRIVMSGs instead of NOTICEs.
+# @channel continues to use NOTICE unless DisableDefaultMentions is also enabled.
+#DisableHereAllNotices = true
 # Channel wide default mentions @channel, @all, and @here are shown as IRC NOTICEs.
 # This disables that making them appear as normal PRIVMSGs.
 #DisableDefaultMentions = true

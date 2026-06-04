@@ -867,7 +867,24 @@ func (m *Mattermost) addParentMsg(parentID string, msg string, newLen int, uncou
 }
 
 var validIRCNickRegExp = regexp.MustCompile("^[a-zA-Z0-9_]*$")
-var channelMentionsRegExp = regexp.MustCompile(`@(channel|all|here)\W`)
+var channelMentionsRegExp = regexp.MustCompile(`@(channel|all|here)(\W|$)`)
+var hereAllMentionsRegExp = regexp.MustCompile(`@(all|here)(\W|$)`)
+
+func (m *Mattermost) channelMessageType(message string) string {
+	if m.v.GetBool("mattermost.DisableDefaultMentions") {
+		return ""
+	}
+
+	if m.v.GetBool("mattermost.DisableHereAllNotices") && hereAllMentionsRegExp.MatchString(message) {
+		return ""
+	}
+
+	if channelMentionsRegExp.MatchString(message) {
+		return "notice"
+	}
+
+	return ""
+}
 
 //nolint:funlen,gocognit,gocyclo,cyclop,forcetypeassert
 func (m *Mattermost) handleWsActionPost(rmsg *model.WebSocketEvent) {
@@ -1101,8 +1118,7 @@ func (m *Mattermost) handleWsActionPost(rmsg *model.WebSocketEvent) {
 				},
 			}
 
-			if !m.v.GetBool("mattermost.disabledefaultmentions") && channelMentionsRegExp.MatchString(data.Message) {
-				messageType := "notice"
+			if messageType := m.channelMessageType(data.Message); messageType != "" {
 				event = &bridge.Event{
 					Type: "channel_message",
 					Data: &bridge.ChannelMessageEvent{
